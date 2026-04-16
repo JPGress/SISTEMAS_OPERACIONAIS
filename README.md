@@ -1,6 +1,6 @@
 # 🐧 Sistemas Operacionais - COM104
 
-Repositório de materiais didáticos e recursos para a disciplina de **Sistemas Operacionais** do curso de Engenharia de Software.
+Repositório de materiais didáticos e recursos para a disciplina de **Sistemas Operacionais** do curso de Bacharelado em Sistemas da Informação.
 
 **Instituição:** IESGO  
 **Professor:** João Pedro Gress  
