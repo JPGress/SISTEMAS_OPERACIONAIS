@@ -18,7 +18,7 @@
       "slide": 2,
       "type": "content",
       "title": "COMO VAMOS USAR OS 120 MINUTOS",
-      "text": "• 00:00 – 10:00 → Intro relâmpago: o mínimo que vocês precisam saber\n• 10:00 – 90:00 → LAB — vocês vão pesquisar, projetar e construir\n• 90:00 – 120:00 → Apresentações Flash — demo ao vivo, no terminal\n• A teoria real vocês vão descobrir FAZENDO.\n• O professor circula, não conduz.\n• O único critério que importa: o script funciona?"
+      "text": "• 00:00 – 10:00 → Intro relâmpago: o mínimo que vocês precisam saber\n• 10:00 – 90:00 → LAB — vocês vão pesquisar, projetar e construir\n• 90:00 – 120:00 → Apresentações Flash — demo ao vivo, no terminal\n• A teoria real vocês vão descobrir FAZENDO.\n• O único critério que importa: o script funciona?"
     },
 
     {
@@ -37,7 +37,7 @@
     {
       "slide": 5,
       "type": "content",
-      "title": "TABELA DE REFERÊNCIA RÁPIDA — FIQUE PROJETADA",
+      "title": "TABELA DE REFERÊNCIA RÁPIDA",
       "text": "• OCTAL   SIMBÓLICO    USO TÍPICO\n• 600  →  rw-------    Chave SSH privada\n• 644  →  rw-r--r--    Documento, config\n• 755  →  rwxr-xr-x    Script executável\n• 700  →  rwx------    Diretório privado\n• 777  →  rwxrwxrwx    NUNCA em produção\n• chmod u+x   → dono ganha execução\n• chmod g-w   → grupo perde escrita\n• chmod o=r   → outros: apenas leitura\n• find / -perm -4000   → arquivos SUID"
     },
 
@@ -91,7 +91,7 @@
     {
       "slide": 13,
       "type": "content",
-      "title": "CHEAT SHEET — BASH (FICA PROJETADA DURANTE O LAB)",
+      "title": "CHEAT SHEET — BASH",
       "text": "• ESTRUTURA DO MENU:\n• while true; do\n•   read -p \"Opção: \" op\n•   case $op in\n•     1) ... ;;\n•     0) exit 0 ;;\n•     *) echo \"Inválido\" ;;\n•   esac\n• done\n• VALIDAÇÃO DE ARQUIVO:\n• [[ ! -e \"$arq\" ]] && echo \"Erro: não encontrado\" && continue\n• TESTE DE EXECUTABILIDADE: [[ -x \"$arq\" ]]\n• STATUS DO ÚLTIMO COMANDO: echo $?"
     },
 
@@ -105,7 +105,7 @@
       "slide": 15,
       "type": "content",
       "title": "REGRAS DO LAB — CONSTRUÇÃO",
-      "text": "• Cada grupo: um arquivo, um script, uma máquina.\n• Nomeiem o arquivo: permissoes_NOMES.sh (ex: permissoes_joao_maria.sh)\n• Primeiro comando antes de qualquer coisa: chmod +x permissoes_joao_maria.sh\n• Testem CADA opção assim que implementarem — não deixem para o final.\n• Se travar mais de 10 minutos no mesmo ponto, chamem o professor.\n• É permitido pesquisar. Não é permitido copiar código de outro grupo.\n• Comente enquanto escreve — não depois.\n• O professor pode pedir que expliquem qualquer linha do código."
+      "text": "• Cada grupo: um arquivo, um script, uma máquina.\n• Nomeiem o arquivo: permissoes_NOMES.sh (ex: permissoes_joao_maria.sh)\n• Primeiro comando antes de qualquer coisa: chmod +x permissoes_joao_maria.sh\n• Testem CADA opção assim que implementarem — não deixem para o final.\n• Se travar mais de 10 minutos no mesmo ponto, peçam ajuda.\n• É permitido pesquisar. Não é permitido copiar código de outro grupo.\n• Comente enquanto escreve — não depois."
     },
 
     {
@@ -144,7 +144,7 @@
     {
       "slide": 21,
       "type": "content",
-      "title": "REFERÊNCIAS — FICA PROJETADA DURANTE O LAB",
+      "title": "REFERÊNCIAS RÁPIDAS",
       "text": "• INSPECIONAR: ls -la arquivo | stat arquivo\n• ALTERAR PERMISSÃO: chmod 755 arq | chmod u+x arq | chmod go-rwx arq\n• ALTERAR DONO: chown usuario:grupo arquivo | chown -R www-data /var/www\n• TESTAR: [[ -r ]] leitura | [[ -w ]] escrita | [[ -x ]] execução\n• BUSCAR SUID: find / -perm -4000 -type f 2>/dev/null\n• STICKY BIT: chmod +t /tmp | chmod 1777 /tmp\n• SUID: chmod u+s arquivo | chmod 4755 arquivo\n• SGID: chmod g+s diretorio | chmod 2775 diretorio\n• LOG: echo \"$(date): $acao\" >> permissoes_log_$(date +%Y%m%d).txt"
     },
 
