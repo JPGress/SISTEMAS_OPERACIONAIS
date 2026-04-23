@@ -6,282 +6,154 @@
     "periodo": "2026-01"
   },
   "slides": [
+
     {
       "slide": 1,
       "type": "cover",
       "title": "SISTEMAS OPERACIONAIS",
       "subtitle": "AULA 11 — Permissões de Arquivos no Linux"
     },
+
     {
       "slide": 2,
       "type": "content",
-      "title": "Ementa da Disciplina",
-      "text": "• MÓDULO 1 – FUNDAMENTOS DOS SISTEMAS OPERACIONAIS\n• Histórico, conceitos e estrutura de SO\n• Kernel, Shell e Interface com o usuário\n• MÓDULO 2 – GERENCIAMENTO DE PROCESSOS\n• Processos, threads e escalonamento\n• Comunicação e sincronização\n• MÓDULO 3 – GERENCIAMENTO DE MEMÓRIA\n• Memória virtual, paginação e deadlocks\n• MÓDULO 4 – SISTEMAS DE ARQUIVOS E LINUX\n• Estruturas de diretórios e sistemas de arquivos\n• Gerenciamento de dispositivos\n• PERMISSÕES DE ARQUIVOS NO LINUX ← HOJE"
+      "title": "COMO VAMOS USAR OS 120 MINUTOS",
+      "text": "• 00:00 – 10:00 → Intro relâmpago: o mínimo que vocês precisam saber\n• 10:00 – 90:00 → LAB — vocês vão pesquisar, projetar e construir\n• 90:00 – 120:00 → Apresentações Flash — demo ao vivo, no terminal\n• A teoria real vocês vão descobrir FAZENDO.\n• O professor circula, não conduz.\n• O único critério que importa: o script funciona?"
     },
+
     {
       "slide": 3,
       "type": "section",
-      "title": "\"SEGURANÇA NÃO É\nUM PRODUTO,\nÉ UM PROCESSO\""
+      "title": "INTRO\nRELÂMPAGO\n(10 MIN)"
     },
+
     {
       "slide": 4,
       "type": "content",
-      "title": "SUMÁRIO",
-      "text": "• O que são permissões e por que existem\n• Anatomia das permissões (rwx)\n• Notação simbólica e octal\n• Comandos chmod, chown, chgrp\n• Bits especiais: SUID, SGID, Sticky Bit\n• stat e ls -la — inspecionando permissões\n• Casos reais e boas práticas\n• Laboratório: permissoes.sh\n• Apresentações Flash"
+      "title": "PERMISSÕES — O ESSENCIAL EM 5 MINUTOS",
+      "text": "• Todo arquivo tem: DONO | GRUPO | OUTROS\n• Três permissões para cada: r (ler=4) | w (escrever=2) | x (executar=1)\n• ls -la mostra: -rwxr-xr--  dono  grupo  arquivo\n• chmod altera: chmod 755 script.sh  ou  chmod u+x script.sh\n• chown muda dono: chown joao:alunos arquivo.txt\n• stat inspeciona: stat /etc/passwd\n• [[ -x \"$arq\" ]] testa se é executável\n• Isso é TUDO que vocês precisam para começar. O resto: pesquisem."
     },
+
     {
       "slide": 5,
       "type": "content",
-      "title": "O QUE VOCÊS APRENDERAM NAS AULAS PASSADAS?",
-      "text": "• Shell Script: variáveis, echo, read, parâmetros\n• Processos: PID, PPID, fork, exec, kill\n• Daemons e execução em background\n• Escalonamento de processos\n• Hoje aplicamos tudo isso com SEGURANÇA"
+      "title": "TABELA DE REFERÊNCIA RÁPIDA — FIQUE PROJETADA",
+      "text": "• OCTAL   SIMBÓLICO    USO TÍPICO\n• 600  →  rw-------    Chave SSH privada\n• 644  →  rw-r--r--    Documento, config\n• 755  →  rwxr-xr-x    Script executável\n• 700  →  rwx------    Diretório privado\n• 777  →  rwxrwxrwx    NUNCA em produção\n• chmod u+x   → dono ganha execução\n• chmod g-w   → grupo perde escrita\n• chmod o=r   → outros: apenas leitura\n• find / -perm -4000   → arquivos SUID"
     },
+
     {
       "slide": 6,
-      "type": "content",
-      "title": "OBJETIVOS DA AULA",
-      "text": "• Compreender o modelo de controle de acesso do Linux.\n• Interpretar e modificar permissões com chmod.\n• Alterar proprietário e grupo com chown e chgrp.\n• Entender SUID, SGID e Sticky Bit.\n• Criar um script interativo de gerenciamento de permissões.\n• Apresentar o que aprenderam para a turma."
+      "type": "section",
+      "title": "LAB\nSDD\n(80 MIN)"
     },
+
     {
       "slide": 7,
-      "type": "section",
-      "title": "POR QUE\nPERMISSÕES\nEXISTEM?"
+      "type": "content",
+      "title": "COMO FUNCIONA O LAB — SDD (SPEC DOMAIN DRIVEN)",
+      "text": "• SDD: vocês recebem uma ESPECIFICAÇÃO, não um tutorial.\n• A spec define O QUÊ o software deve fazer, não COMO fazer.\n• Fase 1 — Leitura da Spec (10 min): leiam o slide seguinte com atenção.\n• Fase 2 — Pesquisa e Design (20 min): antes de codar, pesquisem e decidam a estrutura.\n• Fase 3 — Construção (40 min): implementem o script.\n• Fase 4 — Teste (10 min): rodem, quebrem, conserte.\n• Formação: duplas ou trios (máx 3 pessoas). Escolham agora."
     },
+
     {
       "slide": 8,
       "type": "content",
-      "title": "O PROBLEMA SEM CONTROLE DE ACESSO",
-      "text": "• Em um sistema multiusuário, todos os usuários compartilham o mesmo hardware.\n• Sem controle de acesso, qualquer usuário poderia:\n• Ler arquivos privados de outros usuários.\n• Apagar ou modificar configurações do sistema.\n• Executar programas com privilégios indevidos.\n• O Linux resolve isso com um modelo de permissões por arquivo.\n• Cada arquivo pertence a um dono e a um grupo."
+      "title": "SPEC — permissoes.sh v1.0",
+      "text": "• NOME: permissoes.sh\n• OBJETIVO: ferramenta interativa de gerenciamento de permissões\n• INTERFACE: menu em loop (while + case), retorna após cada ação\n• OPERAÇÕES OBRIGATÓRIAS:\n• [1] Inspecionar: ls -la + stat de um arquivo informado\n• [2] Alterar permissão: recebe arquivo e modo (ex: 755), executa chmod\n• [3] Alterar dono: recebe arquivo e usuario:grupo, executa chown\n• [4] Testar executabilidade: informa se o arquivo pode ser executado\n• [5] Aplicar perfil: menu secundário (600=privado, 644=doc, 755=script)\n• [6] Relatório: lista todos arquivos de um diretório com permissões\n• [0] Sair com mensagem de encerramento"
     },
+
     {
       "slide": 9,
       "type": "content",
-      "title": "CONCEITO: DONO, GRUPO E OUTROS",
-      "text": "• Todo arquivo no Linux tem três entidades associadas:\n• Owner (dono): o usuário que criou o arquivo.\n• Group (grupo): um conjunto de usuários com acesso compartilhado.\n• Others (outros): qualquer usuário que não seja o dono nem do grupo.\n• Para cada entidade, o sistema define três permissões: r, w, x.\n• Esse modelo é chamado de DAC — Discretionary Access Control."
+      "title": "SPEC — REQUISITOS TÉCNICOS",
+      "text": "• Shebang: #!/bin/bash obrigatório na linha 1\n• Validação: se o arquivo informado não existir, exibir mensagem de erro e retornar ao menu\n• Comentários: cada bloco de código deve ter ao menos 1 comentário explicando o que faz\n• Variáveis: use nomes descritivos (não use $a, $b — use $arquivo, $modo)\n• Saída: mensagens claras para o usuário (não retornar silêncio)\n• BÔNUS +10%: cores ANSI no menu (verde para sucesso, vermelho para erro)\n• BÔNUS +10%: log de cada operação em permissoes_log_AAAAMMDD.txt\n• BÔNUS +10%: opção [7] buscar todos SUID no sistema (find / -perm -4000)"
     },
+
     {
       "slide": 10,
-      "type": "section",
-      "title": "ANATOMIA\nDAS\nPERMISSÕES"
+      "type": "content",
+      "title": "SPEC — EXEMPLO DE EXECUÇÃO ESPERADA",
+      "text": "• === GERENCIADOR DE PERMISSÕES v1.0 ===\n• [1] Inspecionar arquivo\n• [2] Alterar permissão (chmod)\n• [3] Alterar dono (chown)\n• [4] Testar executabilidade\n• [5] Aplicar perfil de segurança\n• [6] Relatório de diretório\n• [0] Sair\n• Opção: 1\n• Arquivo: /etc/passwd\n• -rw-r--r-- 1 root root 2847 Apr 23 /etc/passwd\n• Tamanho: 2847 bytes | Dono: root | Grupo: root"
     },
+
     {
       "slide": 11,
-      "type": "content",
-      "title": "LENDO A SAÍDA DO ls -la",
-      "text": "• Exemplo: -rwxr-xr--  1  joao  professores  4096  Apr 23  script.sh\n• Posição 1: tipo do arquivo (- arquivo, d diretório, l link)\n• Posições 2-4: permissões do DONO (rwx)\n• Posições 5-7: permissões do GRUPO (r-x)\n• Posições 8-10: permissões dos OUTROS (r--)\n• Campo seguinte: número de links rígidos\n• Depois: dono, grupo, tamanho, data, nome"
+      "type": "section",
+      "title": "FASE 2\nPESQUISA\nE DESIGN"
     },
+
     {
       "slide": 12,
       "type": "content",
-      "title": "O QUE SIGNIFICA CADA LETRA",
-      "text": "• r (read = 4): permissão de LEITURA\n• Para arquivos: pode ler o conteúdo (cat, less, cp)\n• Para diretórios: pode listar o conteúdo (ls)\n• w (write = 2): permissão de ESCRITA\n• Para arquivos: pode modificar ou apagar o conteúdo\n• Para diretórios: pode criar, renomear ou apagar arquivos dentro\n• x (execute = 1): permissão de EXECUÇÃO\n• Para arquivos: pode executar como programa\n• Para diretórios: pode entrar no diretório (cd)"
+      "title": "O QUE PESQUISAR ANTES DE CODAR",
+      "text": "• Antes de abrir o editor, respondam em grupo:\n• Como funciona a estrutura while true; do ... done no bash?\n• Como o case $var in ... esac trata múltiplas opções?\n• Como validar que um arquivo existe antes de operar nele?\n• Como capturar a saída de um comando em uma variável?\n• Fontes permitidas: man pages, tldr, bash.cyberciti.biz, seu próprio histórico\n• Dica: man chmod, man stat, man chown — leiam as FLAGS!\n• Decisão de design: vão criar funções separadas por opção ou tudo inline?"
     },
+
     {
       "slide": 13,
       "type": "content",
-      "title": "NOTAÇÃO OCTAL — O SISTEMA NUMÉRICO",
-      "text": "• Cada permissão tem um valor numérico: r=4, w=2, x=1\n• A soma define a permissão do conjunto:\n• rwx = 4+2+1 = 7\n• rw- = 4+2+0 = 6\n• r-x = 4+0+1 = 5\n• r-- = 4+0+0 = 4\n• --- = 0+0+0 = 0\n• Três dígitos = dono, grupo, outros\n• Exemplo: 755 = rwxr-xr-x"
+      "title": "CHEAT SHEET — BASH (FICA PROJETADA DURANTE O LAB)",
+      "text": "• ESTRUTURA DO MENU:\n• while true; do\n•   read -p \"Opção: \" op\n•   case $op in\n•     1) ... ;;\n•     0) exit 0 ;;\n•     *) echo \"Inválido\" ;;\n•   esac\n• done\n• VALIDAÇÃO DE ARQUIVO:\n• [[ ! -e \"$arq\" ]] && echo \"Erro: não encontrado\" && continue\n• TESTE DE EXECUTABILIDADE: [[ -x \"$arq\" ]]\n• STATUS DO ÚLTIMO COMANDO: echo $?"
     },
+
     {
       "slide": 14,
-      "type": "content",
-      "title": "EXEMPLOS DE PERMISSÕES COMUNS",
-      "text": "• 777 — rwxrwxrwx: todos podem tudo (inseguro!)\n• 755 — rwxr-xr-x: padrão para scripts e executáveis\n• 644 — rw-r--r--: padrão para documentos e configs\n• 600 — rw-------: arquivo privado (chave SSH privada)\n• 700 — rwx------: diretório privado do usuário\n• 444 — r--r--r--: somente leitura para todos\n• 000 — ---------: nenhum acesso (ninguém lê, escreve ou executa)"
+      "type": "section",
+      "title": "FASE 3\nCONSTRUÇÃO\n(40 MIN)"
     },
+
     {
       "slide": 15,
       "type": "content",
-      "title": "CASOS REAIS QUE VOCÊS JÁ VIRAM",
-      "text": "• Por que /etc/shadow não pode ser lido?\n• Permissão: 640 root:shadow — apenas root e grupo shadow leem\n• Por que sudo funciona?\n• O binário /usr/bin/sudo tem SUID bit ativado\n• Por que /tmp aceita arquivos de qualquer usuário?\n• Sticky Bit (+t) ativado — mas só o dono pode apagar o próprio arquivo\n• Por que chmod +x é necessário antes de rodar um script?\n• Sem o bit x, o kernel recusa a execução"
+      "title": "REGRAS DO LAB — CONSTRUÇÃO",
+      "text": "• Cada grupo: um arquivo, um script, uma máquina.\n• Nomeiem o arquivo: permissoes_NOMES.sh (ex: permissoes_joao_maria.sh)\n• Primeiro comando antes de qualquer coisa: chmod +x permissoes_joao_maria.sh\n• Testem CADA opção assim que implementarem — não deixem para o final.\n• Se travar mais de 10 minutos no mesmo ponto, chamem o professor.\n• É permitido pesquisar. Não é permitido copiar código de outro grupo.\n• Comente enquanto escreve — não depois.\n• O professor pode pedir que expliquem qualquer linha do código."
     },
+
     {
       "slide": 16,
       "type": "section",
-      "title": "COMANDOS\nDE\nPERMISSÃO"
+      "title": "FASE 4\nTESTE\n(10 MIN)"
     },
+
     {
       "slide": 17,
       "type": "content",
-      "title": "chmod — ALTERANDO PERMISSÕES",
-      "text": "• Sintaxe: chmod [modo] arquivo\n• Modo simbólico — usa letras e operadores:\n• chmod u+x script.sh — dono: adiciona execução\n• chmod g-w arquivo.txt — grupo: remove escrita\n• chmod o=r config.cfg — outros: apenas leitura\n• chmod a+r publico.txt — todos: adiciona leitura\n• Modo octal — usa números:\n• chmod 755 script.sh\n• chmod 644 documento.txt\n• chmod 600 chave.pem"
+      "title": "COMO TESTAR O SCRIPT — ROTEIRO",
+      "text": "• Crie um ambiente de teste:\n• mkdir ~/teste_perm && cd ~/teste_perm\n• touch script.sh doc.txt chave.pem diretorio\n• mkdir diretorio\n• Teste cada opção do menu:\n• Opção 1: inspecione cada arquivo criado\n• Opção 2: aplique chmod 755 em script.sh — confirme com ls -la\n• Opção 3: tente chown (espera-se erro se não for root — trate isso!)\n• Opção 4: teste -x em script.sh antes e depois do chmod +x\n• Opção 5: aplique o perfil 600 em chave.pem — confirme\n• Opção 6: rode no diretório ~/teste_perm\n• Opção 0: script sai sem travar?"
     },
+
     {
       "slide": 18,
-      "type": "content",
-      "title": "chmod — OPERADORES SIMBÓLICOS",
-      "text": "• Entidades: u (user/dono), g (group/grupo), o (others/outros), a (all/todos)\n• Operadores: + (adiciona), - (remove), = (define exatamente)\n• Exemplos:\n• chmod u+x,g+r arquivo — duas permissões em um comando\n• chmod go-rwx segredo.txt — grupo e outros perdem tudo\n• chmod a=r config.txt — todos ganham apenas leitura\n• chmod -R 755 /var/www/ — aplica recursivamente a diretório\n• Dica: a flag -R é poderosa — use com cuidado em produção!"
+      "type": "section",
+      "title": "APRESENTAÇÕES\nFLASH\n(30 MIN)"
     },
+
     {
       "slide": 19,
       "type": "content",
-      "title": "chown — ALTERANDO O DONO",
-      "text": "• Muda o proprietário (e opcionalmente o grupo) de um arquivo.\n• Sintaxe: chown [novo_dono][:novo_grupo] arquivo\n• Exemplos:\n• chown joao arquivo.txt — muda dono para joao\n• chown joao:alunos arquivo.txt — muda dono e grupo\n• chown :professores script.sh — muda apenas o grupo\n• chown -R www-data /var/www/ — recursivo\n• Requer privilégio root (sudo) para mudar dono de outros usuários."
+      "title": "FORMATO — APRESENTAÇÃO FLASH",
+      "text": "• Tempo total: 5 minutos por grupo (cronometrado)\n• Sem slides. Terminal aberto, código visível.\n• Estrutura obrigatória:\n• PARTE 1 — 1 min: Uma coisa que vocês não sabiam e agora sabem.\n• PARTE 2 — 3 min: Demo ao vivo — executem 3 opções do menu que funcionem.\n• PARTE 3 — 30 seg: Uma linha do código que vocês acharam mais difícil de escrever.\n• Regra: se o script não executar, a apresentação continua — expliquem o que foi tentado e por que não funcionou.\n• Isso também vale nota."
     },
+
     {
       "slide": 20,
       "type": "content",
-      "title": "chgrp e stat — GRUPO E INSPEÇÃO",
-      "text": "• chgrp: altera apenas o grupo do arquivo\n• Sintaxe: chgrp [grupo] arquivo\n• Exemplo: chgrp alunos trabalho.zip\n• stat: exibe informações detalhadas de um arquivo\n• stat /etc/passwd — mostra permissões, dono, inode, datas\n• Saída incluí: File, Size, Blocks, IO Block, regular file\n• Access: permissões em octal e simbólico\n• Uid/Gid: identificadores numéricos do dono e grupo\n• ls -la: visão rápida das permissões de vários arquivos"
+      "title": "RUBRICA DE AVALIAÇÃO",
+      "text": "• Script executa sem erros críticos — 30%\n• Uso correto de while, case, read e variáveis — 20%\n• Validações implementadas (arquivo inexistente, etc.) — 20%\n• Código comentado e organizado — 15%\n• Apresentação clara: conseguem explicar o código — 15%\n• BÔNUS Cores ANSI — +10%\n• BÔNUS Log de operações — +10%\n• BÔNUS Opção SUID (find) — +10%\n• A nota é do GRUPO. Quem não apresenta, não pontua individualmente."
     },
+
     {
       "slide": 21,
-      "type": "section",
-      "title": "BITS\nESPECIAIS"
+      "type": "content",
+      "title": "REFERÊNCIAS — FICA PROJETADA DURANTE O LAB",
+      "text": "• INSPECIONAR: ls -la arquivo | stat arquivo\n• ALTERAR PERMISSÃO: chmod 755 arq | chmod u+x arq | chmod go-rwx arq\n• ALTERAR DONO: chown usuario:grupo arquivo | chown -R www-data /var/www\n• TESTAR: [[ -r ]] leitura | [[ -w ]] escrita | [[ -x ]] execução\n• BUSCAR SUID: find / -perm -4000 -type f 2>/dev/null\n• STICKY BIT: chmod +t /tmp | chmod 1777 /tmp\n• SUID: chmod u+s arquivo | chmod 4755 arquivo\n• SGID: chmod g+s diretorio | chmod 2775 diretorio\n• LOG: echo \"$(date): $acao\" >> permissoes_log_$(date +%Y%m%d).txt"
     },
+
     {
       "slide": 22,
-      "type": "content",
-      "title": "SUID — SET USER ID",
-      "text": "• O SUID faz um executável rodar com as permissões do DONO, não do usuário que executa.\n• Identificado por s no lugar do x do dono: rwsr-xr-x\n• Valor octal: 4xxx (ex: 4755)\n• Como ativar: chmod u+s arquivo ou chmod 4755 arquivo\n• Exemplo real: /usr/bin/passwd\n• ls -la /usr/bin/passwd → -rwsr-xr-x\n• Qualquer usuário pode mudar sua senha, mas o binário roda como root.\n• Perigo: SUID em scripts shell é ignorado pelo kernel por segurança."
-    },
-    {
-      "slide": 23,
-      "type": "content",
-      "title": "SGID — SET GROUP ID",
-      "text": "• O SGID em arquivos: executa com o grupo do arquivo, não do usuário.\n• Em diretórios: novos arquivos criados herdam o grupo do diretório.\n• Identificado por s no lugar do x do grupo: rwxr-sr-x\n• Valor octal: 2xxx (ex: 2755)\n• Como ativar: chmod g+s diretorio/ ou chmod 2755 diretorio/\n• Exemplo de uso: diretório compartilhado de equipe\n• mkdir /projetos/equipe && chmod 2775 /projetos/equipe\n• Todos os arquivos criados dentro herdam o grupo da equipe."
-    },
-    {
-      "slide": 24,
-      "type": "content",
-      "title": "STICKY BIT — PROTEÇÃO DE DIRETÓRIO",
-      "text": "• O Sticky Bit em diretórios impede que usuários apaguem arquivos de outros.\n• Mesmo que todos tenham permissão de escrita no diretório.\n• Identificado por t no lugar do x dos outros: rwxrwxrwt\n• Valor octal: 1xxx (ex: 1777)\n• Como ativar: chmod +t /tmp ou chmod 1777 /tmp\n• Exemplo clássico: o diretório /tmp\n• ls -la / | grep tmp → drwxrwxrwt\n• Qualquer usuário cria arquivos, mas só o DONO pode apagar o seu."
-    },
-    {
-      "slide": 25,
-      "type": "content",
-      "title": "RESUMINDO OS BITS ESPECIAIS",
-      "text": "• SUID (4): executável roda como dono → chmod 4755 arquivo\n• SGID (2): executável roda como grupo / diretório herda grupo → chmod 2755 dir\n• Sticky (1): em diretório, só dono apaga seu arquivo → chmod 1777 /tmp\n• Como visualizar: ls -la mostra s ou t nos bits de execução\n• S (maiúsculo): bit especial ativado, mas sem bit x correspondente (raro e suspeito)\n• t (minúsculo): sticky ativo com x\n• T (maiúsculo): sticky ativo sem x\n• Buscar SUID no sistema: find / -perm -4000 -type f 2>/dev/null"
-    },
-    {
-      "slide": 26,
-      "type": "section",
-      "title": "DEMO\nAO VIVO\nNO TERMINAL"
-    },
-    {
-      "slide": 27,
-      "type": "content",
-      "title": "SEQUÊNCIA DE COMANDOS — DEMO 1",
-      "text": "• # Criar ambiente de teste\n• mkdir ~/lab_permissoes && cd ~/lab_permissoes\n• touch script.sh documento.txt chave.pem\n• # Ver permissões padrão\n• ls -la\n• # Aplicar permissões adequadas\n• chmod 755 script.sh\n• chmod 644 documento.txt\n• chmod 600 chave.pem\n• # Inspecionar com stat\n• stat chave.pem\n• ls -la"
-    },
-    {
-      "slide": 28,
-      "type": "content",
-      "title": "SEQUÊNCIA DE COMANDOS — DEMO 2",
-      "text": "• # Testar permissões com condicionais bash\n• [[ -r chave.pem ]] && echo 'Posso ler' || echo 'Sem leitura'\n• [[ -x script.sh ]] && echo 'Posso executar' || echo 'Sem execução'\n• # Mudar dono (requer sudo em outros usuários)\n• # sudo chown www-data:www-data documento.txt\n• # Sticky Bit — testando /tmp\n• ls -la / | grep tmp\n• stat /tmp\n• # Buscar binários com SUID\n• find /usr/bin -perm -4000 -type f 2>/dev/null | head -10"
-    },
-    {
-      "slide": 29,
-      "type": "section",
-      "title": "EXERCÍCIOS\nDE\nFIXAÇÃO"
-    },
-    {
-      "slide": 30,
-      "type": "content",
-      "title": "EXERCÍCIO DE FIXAÇÃO 1",
-      "text": "• Qual notação octal representa a permissão rwxr-x---?\n• (A) 750\n• (B) 755\n• (C) 740\n• (D) 760\n• (E) 644\n• Dica: converta cada grupo separadamente.\n• r=4, w=2, x=1 | r=4, -=0, x=1 | -=0, -=0, -=0"
-    },
-    {
-      "slide": 31,
-      "type": "content",
-      "title": "EXERCÍCIO DE FIXAÇÃO 2",
-      "text": "• Qual comando torna um arquivo legível apenas pelo dono?\n• (A) chmod 777 arquivo\n• (B) chmod 644 arquivo\n• (C) chmod 600 arquivo\n• (D) chmod 755 arquivo\n• (E) chmod 400 arquivo\n• Analise: 600 = rw------- (dono lê e escreve, ninguém mais acessa)\n• 400 = r-------- (dono apenas lê)"
-    },
-    {
-      "slide": 32,
-      "type": "content",
-      "title": "EXERCÍCIO DE FIXAÇÃO 3",
-      "text": "• O que o Sticky Bit faz em um diretório?\n• (A) Impede qualquer exclusão de arquivos no diretório\n• (B) Faz os executáveis rodarem como root\n• (C) Permite que apenas o dono do arquivo o apague, mesmo que outros tenham w\n• (D) Herda o grupo do diretório pai\n• (E) Torna o diretório somente leitura\n• Lembre-se do /tmp: todos escrevem, mas ninguém apaga o arquivo do outro."
-    },
-    {
-      "slide": 33,
-      "type": "section",
-      "title": "BOAS\nPRÁTICAS\nDE SEGURANÇA"
-    },
-    {
-      "slide": 34,
-      "type": "content",
-      "title": "PRINCÍPIO DO MENOR PRIVILÉGIO",
-      "text": "• Conceda apenas as permissões estritamente necessárias.\n• Nunca use 777 em produção — é uma bomba-relógio de segurança.\n• Regra geral para arquivos comuns: 644 (rw-r--r--)\n• Regra geral para scripts: 755 (rwxr-xr-x)\n• Arquivos sensíveis (chaves, senhas): 600 (rw-------)\n• Diretórios compartilhados: use SGID + 775 (rwxrwsr-x)\n• Diretórios públicos de escrita: use Sticky Bit + 1777"
-    },
-    {
-      "slide": 35,
-      "type": "content",
-      "title": "CHECKLIST DE SEGURANÇA EM PRODUÇÃO",
-      "text": "• Verificar arquivos com permissão 777: find / -perm 777 -type f\n• Verificar binários com SUID inesperado: find / -perm -4000 -type f\n• Verificar arquivos sem dono: find / -nouser -o -nogroup\n• Inspecionar diretório home: ls -la ~\n• Verificar chaves SSH: stat ~/.ssh/id_rsa (deve ser 600)\n• Verificar /etc/passwd e /etc/shadow\n• ls -la /etc/passwd → deve ser 644\n• ls -la /etc/shadow → deve ser 640 ou 000"
-    },
-    {
-      "slide": 36,
-      "type": "section",
-      "title": "LABORATÓRIO\nPERMISSOES.SH"
-    },
-    {
-      "slide": 37,
-      "type": "content",
-      "title": "O DESAFIO — permissoes.sh",
-      "text": "• Criar um script interativo com menu de 6 opções:\n• [1] Ver permissões de arquivo/diretório (ls -la + stat)\n• [2] Alterar permissões com chmod\n• [3] Alterar dono com chown\n• [4] Verificar se arquivo é executável (-x)\n• [5] Aplicar perfil de permissão (600, 644, 755)\n• [6] Relatório de permissões de um diretório\n• [0] Sair\n• Requisitos: shebang, loop while + case, validações, comentários"
-    },
-    {
-      "slide": 38,
-      "type": "content",
-      "title": "ESTRUTURA BASE DO SCRIPT",
-      "text": "• #!/bin/bash\n• while true; do\n• echo \"[1] Ver permissões\"\n• read -p \"Opção: \" op\n• case $op in\n• 1)\n• read -p \"Arquivo: \" arq\n• [[ ! -e \"$arq\" ]] && echo \"Erro: não encontrado\" && continue\n• ls -la \"$arq\" && stat \"$arq\"\n• ;;\n• 0) echo \"Saindo...\" && exit 0 ;;\n• *) echo \"Opção inválida\" ;;\n• esac\n• done"
-    },
-    {
-      "slide": 39,
-      "type": "content",
-      "title": "CRITÉRIOS DE AVALIAÇÃO DO SCRIPT",
-      "text": "• Script executa sem erros críticos — 30%\n• Validações implementadas (arquivo não existe, etc.) — 20%\n• Uso correto de case, while, read e variáveis — 20%\n• Código comentado e organizado — 15%\n• Menu completo e funcional (todas as opções) — 15%\n• BÔNUS: Cores ANSI no menu\n• BÔNUS: Log de operações em arquivo com data\n• Tempo: 60 minutos — Formação: duplas ou trios"
-    },
-    {
-      "slide": 40,
-      "type": "section",
-      "title": "APRESENTAÇÕES\nFLASH"
-    },
-    {
-      "slide": 41,
-      "type": "content",
-      "title": "FORMATO DA APRESENTAÇÃO FLASH",
-      "text": "• Tempo: 4 a 5 minutos por grupo\n• Sem slides — direto no terminal\n• Estrutura obrigatória em 3 partes:\n• Parte 1 (1 min): O que aprendemos? Qual foi a maior dificuldade?\n• Parte 2 (2-3 min): Demo ao vivo do script — mostrar pelo menos 3 opções funcionando + mostrar um trecho do código mais desafiador\n• Parte 3 (30 seg): Se você fosse sysadmin, como este script te ajudaria no dia a dia?\n• Critério principal: o script funciona de verdade?"
-    },
-    {
-      "slide": 42,
-      "type": "content",
-      "title": "PERGUNTAS DO PROFESSOR DURANTE A APRESENTAÇÃO",
-      "text": "• O professor poderá perguntar ao grupo:\n• Qual permissão octal usaria para uma chave SSH privada?\n• O que acontece se você executar chmod 000 em um arquivo?\n• Qual a diferença entre chown e chgrp?\n• Por que o /tmp tem o sticky bit ativado?\n• O que o s no lugar do x na posição do dono indica?\n• Domínio técnico demonstrado na resposta vale pontos extra."
-    },
-    {
-      "slide": 43,
-      "type": "content",
-      "title": "RUBRICA DE AVALIAÇÃO — APRESENTAÇÃO",
-      "text": "• Script executa sem erros críticos — 30%\n• Clareza da explicação técnica — 25%\n• Demo ao vivo fluente — 20%\n• Entendimento de permissões (responde perguntas) — 15%\n• Código comentado e organizado — 10%\n• A avaliação é do GRUPO — colaborem!\n• Quem não participar da apresentação não pontua.\n• Tempo total de apresentações: ~30 minutos"
-    },
-    {
-      "slide": 44,
-      "type": "section",
-      "title": "CONSOLIDANDO\nO\nAPRENDIZADO"
-    },
-    {
-      "slide": 45,
-      "type": "content",
-      "title": "PERGUNTAS FINAIS PARA A TURMA",
-      "text": "• Pergunta 1: Qual permissão octal para um arquivo de chave SSH?\n• Resposta: 600 — rw------- (dono lê e escreve, ninguém mais)\n• Pergunta 2: Por que /tmp tem o sticky bit?\n• Resposta: Para que usuários não apaguem arquivos de outros, mesmo com w\n• Pergunta 3: O que acontece se um script não tem permissão x?\n• Resposta: Permission denied — o kernel recusa a execução\n• Pergunta 4: Como verificar todos os arquivos SUID do sistema?\n• Resposta: find / -perm -4000 -type f 2>/dev/null"
-    },
-    {
-      "slide": 46,
-      "type": "content",
-      "title": "REFERÊNCIAS DA AULA",
-      "text": "• Comandos abordados:\n• ls -la, stat — inspecionar permissões\n• chmod — alterar permissões (octal e simbólico)\n• chown — alterar dono e grupo\n• chgrp — alterar apenas o grupo\n• find -perm — buscar arquivos por permissão\n• Testes bash: -r (leitura), -w (escrita), -x (execução), -f (arquivo), -d (dir)\n• Bits especiais: SUID (4xxx), SGID (2xxx), Sticky (1xxx)\n• Dica: man chmod e man stat para referência completa"
-    },
-    {
-      "slide": 47,
-      "type": "content",
-      "title": "PRÓXIMA AULA — AULA 12",
-      "text": "• ACLs — Listas de Controle de Acesso\n• O próximo nível de granularidade após chmod\n• Comandos: getfacl e setfacl\n• Permite definir permissões para usuários específicos, além de owner/group/others\n• SELinux e AppArmor — Controle de acesso mandatório (MAC)\n• Para a próxima aula:\n• Revise o script permissoes.sh que você criou hoje\n• Pesquise: qual a diferença entre DAC e MAC?"
-    },
-    {
-      "slide": 48,
       "type": "closing",
       "title": "DÚVIDAS?",
-      "text": "jpgress@iesgo.edu.br\nMaterial disponível no repositório da disciplina"
+      "text": "joao.gress@iesgo.edu.br\nMaterial disponível no repositório da disciplina"
     }
+
   ]
 }
