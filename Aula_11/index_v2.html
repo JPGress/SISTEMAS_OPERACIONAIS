@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 11: Permissões de Arquivos — COM104 v2.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e0e5ff;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 350px;
+            background: rgba(15, 20, 40, 0.95);
+            border-right: 1px solid rgba(0, 210, 255, 0.2);
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #00d2ff;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 6px;
+            color: #e0e5ff;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .toc {
+            list-style: none;
+        }
+
+        .toc-section {
+            margin-bottom: 25px;
+        }
+
+        .toc-section-title {
+            color: #00d2ff;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toc-item {
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .toc-item:hover {
+            background: rgba(0, 210, 255, 0.1);
+            color: #00d2ff;
+        }
+
+        .toc-item.active {
+            background: rgba(0, 210, 255, 0.2);
+            color: #00d2ff;
+            border-left: 3px solid #00d2ff;
+            padding-left: 9px;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+        }
+
+        .header {
+            background: rgba(15, 20, 40, 0.8);
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #00d2ff;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .slide-viewer {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            overflow: hidden;
+        }
+
+        .slide-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 210, 255, 0.2);
+        }
+
+        .controls {
+            background: rgba(15, 20, 40, 0.8);
+            padding: 20px 40px;
+            border-top: 1px solid rgba(0, 210, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls button {
+            background: rgba(0, 210, 255, 0.2);
+            border: 1px solid #00d2ff;
+            color: #00d2ff;
+            padding: 10px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .controls button:hover {
+            background: #00d2ff;
+            color: #0a0e27;
+        }
+
+        .slide-counter {
+            color: #a0aabf;
+            font-size: 16px;
+        }
+
+        .slide-input {
+            width: 80px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 4px;
+            color: #e0e5ff;
+            text-align: center;
+        }
+
+        /* BADGE DE AULA */
+        .aula-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #00d2ff, #7b2ff7);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { width: 280px; }
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+            }
+            .slide-viewer { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="aula-badge">AULA 11 v2.0</div>
+            <h2>🔐 Permissões de Arquivos</h2>
+            <input type="text" class="search-box" id="searchBox" placeholder="Buscar slide...">
+
+            <div class="toc">
+                <!-- Abertura -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Abertura</div>
+                    <div class="toc-item active" data-slide="1">1. Capa</div>
+                    <div class="toc-item" data-slide="2">2. Ementa</div>
+                    <div class="toc-item" data-slide="3">3. Frase de Abertura</div>
+                    <div class="toc-item" data-slide="4">4. Sumário</div>
+                    <div class="toc-item" data-slide="5">5. Revisão Anterior</div>
+                    <div class="toc-item" data-slide="6">6. Objetivos</div>
+                </div>
+
+                <!-- Por que Permissões? -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Por que Permissões?</div>
+                    <div class="toc-item" data-slide="7">7. Seção</div>
+                    <div class="toc-item" data-slide="8">8. O Problema</div>
+                    <div class="toc-item" data-slide="9">9. Dono, Grupo e Outros</div>
+                </div>
+
+                <!-- Anatomia -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Anatomia das Permissões</div>
+                    <div class="toc-item" data-slide="10">10. Seção</div>
+                    <div class="toc-item" data-slide="11">11. Lendo ls -la</div>
+                    <div class="toc-item" data-slide="12">12. r, w, x</div>
+                    <div class="toc-item" data-slide="13">13. Notação Octal</div>
+                    <div class="toc-item" data-slide="14">14. Permissões Comuns</div>
+                    <div class="toc-item" data-slide="15">15. Casos Reais</div>
+                </div>
+
+                <!-- Comandos -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Comandos</div>
+                    <div class="toc-item" data-slide="16">16. Seção</div>
+                    <div class="toc-item" data-slide="17">17. chmod</div>
+                    <div class="toc-item" data-slide="18">18. chmod Operadores</div>
+                    <div class="toc-item" data-slide="19">19. chown</div>
+                    <div class="toc-item" data-slide="20">20. chgrp e stat</div>
+                </div>
+
+                <!-- Bits Especiais -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Bits Especiais</div>
+                    <div class="toc-item" data-slide="21">21. Seção</div>
+                    <div class="toc-item" data-slide="22">22. SUID</div>
+                    <div class="toc-item" data-slide="23">23. SGID</div>
+                    <div class="toc-item" data-slide="24">24. Sticky Bit</div>
+                    <div class="toc-item" data-slide="25">25. Resumindo Bits</div>
+                </div>
+
+                <!-- Demo ao Vivo -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Demo ao Vivo</div>
+                    <div class="toc-item" data-slide="26">26. Seção</div>
+                    <div class="toc-item" data-slide="27">27. Demo 1</div>
+                    <div class="toc-item" data-slide="28">28. Demo 2</div>
+                </div>
+
+                <!-- Exercícios -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Fixação</div>
+                    <div class="toc-item" data-slide="29">29. Seção</div>
+                    <div class="toc-item" data-slide="30">30. Exercício 1</div>
+                    <div class="toc-item" data-slide="31">31. Exercício 2</div>
+                    <div class="toc-item" data-slide="32">32. Exercício 3</div>
+                </div>
+
+                <!-- Boas Práticas -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Boas Práticas</div>
+                    <div class="toc-item" data-slide="33">33. Seção</div>
+                    <div class="toc-item" data-slide="34">34. Menor Privilégio</div>
+                    <div class="toc-item" data-slide="35">35. Checklist Produção</div>
+                </div>
+
+                <!-- Laboratório -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Laboratório</div>
+                    <div class="toc-item" data-slide="36">36. Seção</div>
+                    <div class="toc-item" data-slide="37">37. O Desafio</div>
+                    <div class="toc-item" data-slide="38">38. Estrutura Base</div>
+                    <div class="toc-item" data-slide="39">39. Critérios</div>
+                </div>
+
+                <!-- Apresentações -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Apresentações Flash</div>
+                    <div class="toc-item" data-slide="40">40. Seção</div>
+                    <div class="toc-item" data-slide="41">41. Formato Flash</div>
+                    <div class="toc-item" data-slide="42">42. Perguntas do Prof</div>
+                    <div class="toc-item" data-slide="43">43. Rubrica</div>
+                </div>
+
+                <!-- Encerramento -->
+                <div class="toc-section">
+                    <div class="toc-section-title">Encerramento</div>
+                    <div class="toc-item" data-slide="44">44. Seção</div>
+                    <div class="toc-item" data-slide="45">45. Perguntas Finais</div>
+                    <div class="toc-item" data-slide="46">46. Referências</div>
+                    <div class="toc-item" data-slide="47">47. Próxima Aula</div>
+                    <div class="toc-item" data-slide="48">48. Dúvidas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="slideTitle">Permissões de Arquivos no Linux — COM104 Aula 11</h1>
+                <div class="header-meta">
+                    <span>Prof. João Pedro Gress</span>
+                    <span>IESGO 2026.1</span>
+                </div>
+            </div>
+
+            <div class="slide-viewer">
+                <img class="slide-image" id="slideImage" src="slides/slide_01.png" alt="Slide">
+            </div>
+
+            <div class="controls">
+                <button onclick="previousSlide()">← Anterior</button>
+                <div class="slide-counter">
+                    <input type="number" class="slide-input" id="slideNumber" value="1" min="1" max="48">
+                    <span> / 48</span>
+                </div>
+                <button onclick="nextSlide()">Próximo →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 48;
+
+        const slideTitles = {
+            1: "Capa — Permissões de Arquivos no Linux",
+            2: "Ementa da Disciplina",
+            3: "Frase de Abertura",
+            4: "Sumário da Aula",
+            5: "Revisão das Aulas Anteriores",
+            6: "Objetivos da Aula",
+            7: "Por que Permissões Existem?",
+            8: "O Problema sem Controle de Acesso",
+            9: "Dono, Grupo e Outros",
+            10: "Anatomia das Permissões",
+            11: "Lendo a Saída do ls -la",
+            12: "O que Significa r, w, x",
+            13: "Notação Octal",
+            14: "Permissões Comuns",
+            15: "Casos Reais que Vocês Já Viram",
+            16: "Comandos de Permissão",
+            17: "chmod — Alterando Permissões",
+            18: "chmod — Operadores Simbólicos",
+            19: "chown — Alterando o Dono",
+            20: "chgrp e stat",
+            21: "Bits Especiais",
+            22: "SUID — Set User ID",
+            23: "SGID — Set Group ID",
+            24: "Sticky Bit",
+            25: "Resumindo os Bits Especiais",
+            26: "Demo ao Vivo no Terminal",
+            27: "Sequência Demo 1",
+            28: "Sequência Demo 2",
+            29: "Exercícios de Fixação",
+            30: "Exercício 1 — Notação Octal",
+            31: "Exercício 2 — chmod",
+            32: "Exercício 3 — Sticky Bit",
+            33: "Boas Práticas de Segurança",
+            34: "Princípio do Menor Privilégio",
+            35: "Checklist de Produção",
+            36: "Laboratório — permissoes.sh",
+            37: "O Desafio",
+            38: "Estrutura Base do Script",
+            39: "Critérios de Avaliação",
+            40: "Apresentações Flash",
+            41: "Formato da Apresentação Flash",
+            42: "Perguntas do Professor",
+            43: "Rubrica de Avaliação",
+            44: "Consolidando o Aprendizado",
+            45: "Perguntas Finais",
+            46: "Referências da Aula",
+            47: "Próxima Aula — Aula 12",
+            48: "Dúvidas?"
+        };
+
+        function updateSlide(slideNum) {
+            if (slideNum < 1) slideNum = 1;
+            if (slideNum > totalSlides) slideNum = totalSlides;
+
+            currentSlide = slideNum;
+            const paddedNum = String(slideNum).padStart(2, '0');
+            document.getElementById('slideImage').src = `slides/slide_${paddedNum}.png`;
+            document.getElementById('slideNumber').value = slideNum;
+            document.getElementById('slideTitle').textContent = slideTitles[slideNum] || `Slide ${slideNum}`;
+
+            // Update active TOC item
+            document.querySelectorAll('.toc-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-slide="${slideNum}"]`)?.classList.add('active');
+
+            // Scroll TOC item into view
+            const activeItem = document.querySelector(`[data-slide="${slideNum}"]`);
+            if (activeItem) {
+                activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+        }
+
+        function nextSlide() { updateSlide(currentSlide + 1); }
+        function previousSlide() { updateSlide(currentSlide - 1); }
+
+        // TOC click handler
+        document.querySelectorAll('.toc-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                updateSlide(parseInt(e.target.getAttribute('data-slide')));
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') previousSlide();
+            if (e.key === 'Home') updateSlide(1);
+            if (e.key === 'End') updateSlide(totalSlides);
+        });
+
+        // Slide input change
+        document.getElementById('slideNumber').addEventListener('change', (e) => {
+            updateSlide(parseInt(e.target.value));
+        });
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.toc-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(term) ? 'block' : 'none';
+            });
+            // Show all section titles always
+            if (!term) {
+                document.querySelectorAll('.toc-item').forEach(item => {
+                    item.style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
