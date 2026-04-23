@@ -1,0 +1,44 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                 AULA 11: SHELL SCRIPT - COM104                              ║
+║                                                                              ║
+║                  👉 ABRA: index_v2.html                                     ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+🚀 COMECE AQUI:
+
+   1. Encontre o arquivo: index_v2.html
+   2. Clique duplo para abrir no navegador
+   3. Use as setas (←→) ou clique para navegar
+   4. Aproveite! 🎉
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📚 O QUE VOCÊ TEM:
+
+   ✅ 38 slides da aula completos
+   ✅ 6 infográficos profissionais
+   ✅ 5 PDFs teóricos para aprofundamento
+   ✅ Navegação interativa
+   ✅ Atividades práticas com gabaritos
+   ✅ Scripts prontos para executar
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎮 COMO NAVEGAR:
+
+   ➡️  Próximo slide       →  Clique "Próximo" ou Seta →
+   ⬅️  Slide anterior      ←  Clique "Anterior" ou Seta ←
+   📊  Ver infográfico     →  Clique na lista de infográficos
+   ❌  Fechar infográfico  →  Clique no ✕ ou Escape
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📖 PARA MAIS DETALHES:
+
+   Abra: README_ALUNOS.md (guia completo)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+                        Bom estudo! 🚀

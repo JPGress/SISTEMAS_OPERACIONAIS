@@ -1,0 +1,123 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                 AULA 11: SHELL SCRIPT - COM104                              ║
+║           Bem-vindo! Comece aqui para usar a apresentação.                 ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+⚡ RÁPIDO START (30 segundos):
+
+1. Procure pelo arquivo:  index_v2.html
+
+2. Abra com seu navegador (duplo clique)
+
+3. Aproveite a aula! 🎉
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📚 CONTEÚDO:
+
+   ✅ 38 slides de aula                   (Variáveis, Scripts, Testes, etc)
+   ✅ 6 infográficos profissionais        (Clique para ampliar)
+   ✅ 3 PDFs teóricos                     (Linux, Shell, Arquitetura)
+   ✅ Navegação interativa                (Teclado + Mouse)
+   ✅ Busca de tópicos                    (Encontre rapidamente)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎮 CONTROLES:
+
+   ➡️  Próximo slide              Clique em "Próximo →" ou Seta →
+   ⬅️  Slide anterior             Clique em "← Anterior" ou Seta ←
+   🔢  Ir para slide X            Digite o número e Enter
+   🔍  Buscar tópico              Use a caixa "Buscar slide..."
+   📊  Ver infográfico            Clique em qualquer item da lista
+   ❌  Fechar infográfico         Clique no ✕ ou Escape
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📂 ARQUIVOS DISPONÍVEIS:
+
+   index_v2.html                  ← ABRA ESTE! (Apresentação)
+   README_ALUNOS.md               ← Guia completo (leia depois)
+   COMECE_AQUI.txt                ← Este arquivo
+
+   slides/                        ← 38 slides PNG
+   infograficos/                  ← 6 infográficos
+   materiais_teoricos/            ← 3 PDFs para estudo
+   documentacao/                  ← Material extra
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📖 TÓPICOS DA AULA:
+
+   1. Variáveis (Slides 1-5)
+      • Conceitos básicos
+      • Armazenamento em memória
+      • Proteção de caracteres
+
+   2. Shell Script (Slides 6-10)
+      • O que é Shell Script
+      • Estrutura básica
+      • Comandos echo e date
+
+   3. Variáveis Avançado (Slides 11-14)
+      • Sintaxe
+      • Saída de comandos
+      • Escopo
+
+   4. Expressões & Testes (Slides 15-21)
+      • Aritmética
+      • Comparações
+      • Testes de arquivo
+
+   5. Comando READ (Slides 22-26)
+      • Leitura de entrada
+      • Parâmetros
+      • Aplicações práticas
+
+   6. Parâmetros (Slides 27-30)
+      • Posicionais ($1, $2, ...)
+      • Especiais ($#, $@, $?)
+      • SHIFT
+
+   7. Exemplos Práticos (Slides 31-38)
+      • Scripts prontos
+      • Casos de uso reais
+      • Exercícios
+
+═══════════════════════════════════════════════════════════════════════════════
+
+💡 DICAS:
+
+   ✏️  Abra um terminal enquanto assiste
+   ✏️  Digite os comandos nos exemplos
+   ✏️  Experimente modificar os scripts
+   ✏️  Leia os PDFs para aprofundar
+   ✏️  Use os infográficos para visualizar conceitos
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📞 DÚVIDAS?
+
+   Professor:  João Pedro Gress
+   Email:      jpgress@iesgo.edu.br
+   Curso:      Sistemas Operacionais - COM104
+   Período:    2026.1
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 PRÓXIMOS PASSOS:
+
+   1. Abra index_v2.html
+   2. Assista aos slides 1-38
+   3. Clique nos infográficos quando quiser visualizar
+   4. Refaça os exemplos no seu terminal
+   5. Leia os PDFs para aprofundar
+   6. Pratique criando seus próprios scripts!
+
+═══════════════════════════════════════════════════════════════════════════════
+
+                    Bom estudo! Aproveite a aula! 🚀
+
+═══════════════════════════════════════════════════════════════════════════════

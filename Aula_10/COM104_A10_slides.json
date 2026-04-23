@@ -1,0 +1,406 @@
+[
+    {
+        "slide": 2,
+        "content": "SISTEMAS OPERACIONAIS\n\nAULA 11 - Administração básica de sistemas Linux e\ncomandos essenciais\n\nProf: João Pedro Gress"
+    },
+    {
+        "slide": 4,
+        "content": "# Ementa da Disciplina\nMÓDULO 1 – FUNDAMENTOS DOS\nSISTEMAS OPERACIONAIS\n\nHistórico e evolução dos sistemas\noperacionais\nConceitos fundamentais\nTipos de sistemas operacionais\nEstrutura e componentes: Kernel, Shell e\nInterface com o usuário\n\nMÓDULO 2 – GERENCIAMENTO DE\nPROCESSOS E PROCESSADORES\n\nConceito de processo e thread\nEscalonamento de processos:\nmonoprocessamento e\nmultiprocessamento\nComunicação entre processos\nConcorrência e sincronização de processos\n\nMÓDULO 3 – GERENCIAMENTO DE MEMÓRIA\nE DEADLOCKS\nConceitos básicos de memória\nMemória virtual e paginação\nSegmentação e alocação de memória\nDeadlocks: detecção, prevenção e\nrecuperação\n\nMÓDULO 4 – SISTEMAS DE ARQUIVOS E\nLINUX\n\nEstruturas de diretórios e sistemas de\narquivos\nGerenciamento de dispositivos e drivers\nSistemas de arquivos do Linux, Windows e\nMacOS\nADMINISTRAÇÃO BÁSICA DE SISTEMAS\nLINUX E COMANDOS ESSENCIAIS"
+    },
+    {
+        "slide": 5,
+        "content": "“A NATUREZA PREMIA\nOS ESFORÇADOS”"
+    },
+    {
+        "slide": 6,
+        "content": "#SUMÁRIO\n\nIntrodução\nFundamentos da Linha de\nComando no Linux\nManipulação de Texto no\nTerminal\nIntrodução ao Bash Script\nLaboratório Prático Orientado\nEncerramento"
+    },
+    {
+        "slide": 7,
+        "content": "O QUE VOCÊS\nAPRENDERAM NAS\nAULAS PASSADAS?"
+    },
+    {
+        "slide": 8,
+        "content": "#OBJETIVOS\nCompreender comandos essenciais de administração de sistema.\nManipular arquivos de texto no terminal.\nCriar os primeiros scripts em Bash."
+    },
+    {
+        "slide": 9,
+        "content": "SHELL"
+    },
+    {
+        "slide": 10,
+        "content": "NOÇÕES BÁSICAS"
+    },
+    {
+        "slide": 11,
+        "content": "FUNDAMENTOS DO SHELL\nO Shell é o interpretador de comandos do sistema operacional.\nFunciona como uma ponte entre o usuário e o SO, recebendo e\nexecutando comandos.\nA interação acontece por meio de terminais ou consoles.\nComandos comuns no Shell incluem ls, cat, touch, mkdir, cp, rm,\nmv.\nO Shell exibe um prompt de comando solicitando ações do\nusuário."
+    },
+    {
+        "slide": 12,
+        "content": "FUNCIONAMENTO DA INTERAÇÃO\nO usuário digita um comando, e o Shell executa imediatamente.\nOs comandos podem ser internos (built-in) ou programas\nexternos.\nApós a execução, o Shell retorna ao prompt, pronto para outro\ncomando.\nEsse processo cria um diálogo contínuo entre o usuário e o\nsistema.\nA sequência de interação é visualizada como um ciclo de\nentrada, execução e resposta."
+    },
+    {
+        "slide": 14,
+        "content": "COMANDOS E ENTRADA/SAÍDA NO SHELL\nO Shell permite automatizar tarefas complexas via scripts.\nPor padrão, a entrada é o teclado e a saída é o monitor, a menos\nque seja redirecionada.\nO comando echo exibe informações na saída padrão ou\nredirecionada.\nAspas são usadas no echo para evitar interpretação de\ncaracteres especiais.\nCada usuário tem um Shell padrão atribuído na criação da conta."
+    },
+    {
+        "slide": 15,
+        "content": "TIPOS DE SHELLS NO LINUX\nOs Shells mais comuns pertencem à família Bourne (sh, bash),\ncom destaque para o bash.\nO csh (C Shell) é voltado à computação numérica, mas tem\nsintaxe mais complexa.\nAs diferenças entre Shells estão nas funcionalidades e na sintaxe\ndos comandos.\nPara saber o Shell do usuário, consulte o arquivo /etc/passwd.\nPara listar todos os Shells disponíveis, veja /etc/shells."
+    },
+    {
+        "slide": 16,
+        "content": "OU SEJA...\nO Shell é tão poderoso que suporta várias funcionalidades como:\nRedirecionamento de entrada e saída de aplicações, como por\nexemplo:\n$ ls /home > ArquivoDeSaida.txt\nExecução de sequências de comandos:\n$ cat /etc/passwd | grep root\nEscrita na saída padrão ou redirecionada:\n$ echo “Este é um curso de Introdução ao Linux”\nAutomatização de sequências de comandos (programação)."
+    },
+    {
+        "slide": 17,
+        "content": "GERENCIAMENTO\nDE PROCESSOS"
+    },
+    {
+        "slide": 18,
+        "content": "DEFINIÇÃO E CICLO DE VIDA DE UM PROCESSO\nUm processo é um programa em execução, que \"vive\" enquanto\nsuas instruções são processadas.\nQuando o programa termina, o processo também é finalizado\n(\"morre\").\nTodo processo utiliza recursos do sistema, como CPU e\nmemória.\nO processo start kernel cria o processo 0, que por sua vez chama\no init (processo 1).\nO processo init é o pai de todos os outros e é um dos últimos a\nser finalizado."
+    },
+    {
+        "slide": 19,
+        "content": "THREADS E CONCORRÊNCIA\nUma thread é um fluxo de controle dentro de um processo.\nThreads são comuns em sistemas multiprocessadores e\nfacilitam a execução concorrente.\nNo Linux, threads e processos são tratados de forma\nsemelhante.\nQuando processos compartilham estruturas, funcionam como\nthreads do mesmo processo.\nIsso permite paralelismo eficiente mesmo em sistemas com\nmuitos processos."
+    },
+    {
+        "slide": 20,
+        "content": "ESCALONAMENTO E MULTITAREFA\nO escalonador decide qual processo deve rodar em cada\ninstante.\nO objetivo é não desperdiçar recursos e manter a eficiência do\nsistema.\nO Linux usa o modelo time-sharing, dividindo o tempo da CPU\nem “fatias” (quantum).\nAo acabar o quantum de um processo, outro é escolhido\nconforme a prioridade.\nEssa alternância rápida dá a impressão de multitarefa (vários\nprocessos ao mesmo tempo)."
+    },
+    {
+        "slide": 21,
+        "content": "CHAMADAS DE SISTEMA\nChamadas de sistema permitem que processos solicitem\nrecursos ao SO.\nElas alteram o ciclo normal de execução do processo.\nAs chamadas mais comuns são: fork, exec, exit, kill.\nEssas funções são usadas para criar, finalizar e manipular\nprocessos e recursos.\nSem essas chamadas, os processos não teriam acesso a\nmemória, arquivos e E/S."
+    },
+    {
+        "slide": 22,
+        "content": "IDENTIFICAÇÃO E CONTROLE DE PROCESSOS\nCada processo tem um PID (Process Identifier) único.\nTambém possui um PPID (Parent Process Identifier), que é o PID\nde seu processo-pai.\nO comando ps -f exibe PID, PPID e outras informações do\nprocesso.\nProcessos têm propriedades como dono, prioridade e estado\n(ativo, espera, etc.).\nO sistema usa essas informações para gerenciar e proteger os\nprocessos."
+    },
+    {
+        "slide": 23,
+        "content": "PERMISSÕES E IDENTIFICADORES DE USUÁRIO\n\nCada processo pertence a um usuário (UID) e a um grupo (GID).\nO UID e GID definem os privilégios de acesso dos processos.\nO usuário root tem UID 0 e possui acesso total ao sistema.\nPara que outro usuário tenha os mesmos poderes, é necessário\nque seu GID seja 0.\nO arquivo /etc/passwd mostra o UID e GID de cada usuário do\nsistema."
+    },
+    {
+        "slide": 24,
+        "content": "RESUMINDO\nO que é um processo?\nUm programa em execução.\nDuração de um processo:\nEnquanto houver instruções para serem executadas.\nRecursos e gerenciamento:\nOs processos utilizam recursos como processador e memória, e são\norganizados e gerenciados pelo Sistema Operacional.\nProcesso INIT:\nProcesso-pai de todos os outros processos.\nEscalonamento:\nBaseado em time-sharing."
+    },
+    {
+        "slide": 25,
+        "content": "RESUMINDO\nRequisições feitas pelos processos ao Sistema Operacional:\nCriar processos, gerenciar memória, ler e escrever arquivos etc.\nExemplos: fork, exec, exit e kill.\nAs chamadas de sistema alteram o ciclo normal de vida de um processo.\nComo é feito o controle de um processo?\nAtravés de características como estado, prioridade de execução, recursos\nde memória etc.\nO processo é identificado pelo PID e PPID (processo-pai que o criou).\n# ps -f (visualiza essas informações)"
+    },
+    {
+        "slide": 26,
+        "content": "RESUMINDO\n\nPermissões – controladas pelo UID e GID:\nRoot – UID = 0\nPara usuário ter privilégios de root – GID = 0\nVisualizados no arquivo /etc/passwd.\nEx: root:x:0:0:root:/root:/bin/bash – os números são UID e GID,\nrespectivamente."
+    },
+    {
+        "slide": 27,
+        "content": "CRIAÇÃO DE\nPROCESSOS"
+    },
+    {
+        "slide": 28,
+        "content": "CRIAÇÃO DE PROCESSOS NO LINUX\nNo Linux, apenas o processo INIT é criado do zero; todos os\noutros derivam dele.\nA criação de novos processos ocorre via combinação das\nchamadas de sistema fork e exec.\nO fork duplica o processo atual, enquanto o exec substitui o\ncódigo do novo processo.\nAo digitar um comando no terminal, o bash usa fork e depois\nexec para executar o comando.\nEssa lógica permite execução concorrente, com processos\nindependentes entre si."
+    },
+    {
+        "slide": 29,
+        "content": "EXEMPLO PRÁTICO E HIERARQUIA DE PROCESSOS\nUm programa de menu pode bifurcar processos filhos para\nexecutar opções selecionadas.\nCada processo criado por fork recebe um PID diferente, mas\ncompartilha o mesmo PPID.\nO comando pstree -p exibe a árvore hierárquica dos processos,\ncom PIDs e PPIDs.\nA chamada exec mantém o mesmo PID, pois apenas substitui o\nconteúdo do processo.\nExiste também a chamada clone, parecida com fork, mas com\ncomportamentos distintos."
+    },
+    {
+        "slide": 30,
+        "content": "EXECUÇÃO SEQUENCIAL COM EXEC\nCom exec, é possível executar processos sequenciais, sem\nduplicação (sem fork).\nO kernel carrega o novo programa na memória e o executa no\nlugar do anterior.\nO novo processo mantém os arquivos abertos e as identidades\nde usuário/grupo.\nUm exemplo prático: uma sequência de programas de\nimpressão, onde um chama o próximo via exec.\nApós o exec, qualquer comando posterior no script original não\né executado."
+    },
+    {
+        "slide": 33,
+        "content": "RESUMINDO\nOs processos são criados a partir de outros processos (processos-pai).\nProcesso inicial – INIT.\nA criação se dá através de:\nDuplicação de um processo já existente.\nOperação fork-exec.\nExecução concorrente.\nfork – duplica o processo.\nexec – substitui o código antigo pelo novo no processo criado."
+    },
+    {
+        "slide": 34,
+        "content": "PROCESSOS EM\nBACKGROUND E\nDAEMONS"
+    },
+    {
+        "slide": 35,
+        "content": "EXECUÇÃO DE COMANDOS NO SHELL\nQuando o usuário digita um comando, o Shell solicita ao kernel\nsua execução.\nO Shell aguarda a conclusão do comando e então exibe o\nresultado na tela.\nEsse tipo de execução, onde o comando bloqueia o terminal até\nterminar, é chamado de foreground.\nÉ possível interromper comandos em foreground com Ctrl+C.\nPara executar comandos sem bloquear o terminal, usa-se o\nmodo background, com o caractere &."
+    },
+    {
+        "slide": 36,
+        "content": "EXECUÇÃO EM SEGUNDO PLANO (BACKGROUND)\nCom comando &, o usuário pode executar múltiplos comandos\nsimultaneamente.\nIdeal para tarefas demoradas, como sort, find ou execução de\nprogramas.\nAo rodar scripts em background, a saída padrão continua visível,\no que pode atrapalhar.\nPara evitar isso, recomenda-se redirecionar as saídas: comando\n>arquivo 2>&1 &.\nAo iniciar, o processo mostra um PID, que pode ser usado para\nmonitorar ou encerrar a execução."
+    },
+    {
+        "slide": 37,
+        "content": "DAEMONS E AUTOMATIZAÇÃO\nDaemon é um processo em background que pode rodar por\ntempo indeterminado.\nSão usados para tarefas como login, email, impressão, memória,\nestatísticas, etc.\nUm daemon especial é o cron, que verifica a cada minuto se há\ntarefas agendadas.\nPara agendar tarefas, edita-se o crontab do usuário com o\ncomando crontab -e.\nA sintaxe do crontab define minuto, hora, dia, mês, dia da\nsemana e comando."
+    },
+    {
+        "slide": 38,
+        "content": "GERENCIAMENTO DO CRON\nSempre deixe uma linha em branco ao final do crontab, para\ngarantir que o último comando seja lido.\nPara ver as tarefas agendadas, use: crontab -l.\nSe o cron não estiver executando as tarefas corretamente, use:\nsudo restart cron.\nO cron é útil para automatizar rotinas administrativas, como\nbackups ou scripts recorrentes.\nÉ uma ferramenta essencial para manter tarefas periódicas e\nautomatizadas em servidores Linux."
+    },
+    {
+        "slide": 39,
+        "content": "RESUMINDO\nDaemon é um processo executado em background.\nGeralmente não tem tempo de vida definido.\nTarefas nas quais os daemons são usados:\nPaginação de memória.\nSolicitações de login.\nManipulação de e-mails.\nTransferência de arquivos.\nColetas de estatísticas de operações do sistema.\nSolicitações de impressão."
+    },
+    {
+        "slide": 40,
+        "content": "RESUMINDO\n\nCron: usado para programar tarefas.\nEditando o crontab do usuário, é possível programar tarefas.\n# crontab -e\nNa última linha do arquivo programa-se o comando. Exemplo:\n03 17 * * * cp /etc/passwd /home/USER/passwd\nOnde 03 são os minutos e 17, a hora."
+    },
+    {
+        "slide": 41,
+        "content": "SINAIS DO\nSISTEMA"
+    },
+    {
+        "slide": 42,
+        "content": "PROCESSOS CONCORRENTES E SINAIS\nProcessos concorrentes são assíncronos, ou seja, não têm\nexecução interdependente.\nEm alguns casos, processos precisam comunicar eventos ou\nestados entre si.\nPara isso, são utilizados sinais, que notificam sobre eventos no\nprocesso ou no sistema.\nUm sinal pode ser pendente, se foi gerado mas ainda não\nenviado.\nO processo só recebe um sinal se tiver um manipulador de\nsinais ativo."
+    },
+    {
+        "slide": 43,
+        "content": "MANIPULAÇÃO, BLOQUEIO E IGNORAÇÃO DE SINAIS\nO manipulador de sinais é ativado por chamada de sistema no\ncódigo do programa.\nUm processo pode bloquear um sinal temporariamente,\nadiando seu recebimento.\nBloquear ≠ ignorar: bloquear retém o sinal; ignorar descarta sem\ntratar.\nO sistema só entrega o sinal quando desbloqueado, se estiver\nbloqueado.\nA tabela POSIX define os sinais disponíveis no sistema."
+    },
+    {
+        "slide": 44,
+        "content": "COMANDO KILL E FINALIZAÇÃO DE PROCESSOS\nO comando kill é usado para enviar sinais, geralmente de\nfinalização, a um processo.\nA sintaxe é kill pid, e se bem-sucedido, mostra a mensagem:\nTerminated process.\nSe o processo não encerrar, pode-se forçar com kill -9 pid, o que\ngera Killed process.\nkill -9 envia o sinal SIGKILL, que não pode ser ignorado nem\nbloqueado.\nProcessos em background podem continuar ativos mesmo após\no logout."
+    },
+    {
+        "slide": 45,
+        "content": "USO DO NOHUP PARA PERSISTÊNCIA DE PROCESSOS\nO comando nohup permite que processos continuem ativos\napós logout.\nSintaxe: nohup comando\nA saída padrão do comando é redirecionada para nohup.out no\ndiretório do usuário.\nÉ útil para tarefas longas que precisam continuar após sair da\nsessão.\nnohup garante robustez ao rodar processos remotos ou em\nservidores sem supervisão direta."
+    },
+    {
+        "slide": 46,
+        "content": "RESUMINDO\n\nUm sinal é uma notificação de software enviada por um processo ou pelo\nSistema Operacional relativo a um evento ocorrido. Sinais são usados para\npassar informações.\nABRT: aborta o processo.\nINT: sinal de “Ctrl + C”.\nOutro processo pode usar o sinal para realizar alguma ação, se ele ativar\nseu manipulador de sinais."
+    },
+    {
+        "slide": 47,
+        "content": "RESUMINDO\n\nAlguns sinais são gerados por comandos no Shell. Exemplo:\n# kill -9 pid\nUsado para terminar a execução de um processo.\nPara manter a execução de um processo após o logout:\n# nohup arquivo\nA saída do arquivo é redirecionada para o arquivo nohup.out no\ndiretório home do usuário."
+    },
+    {
+        "slide": 48,
+        "content": "VISUALIZAÇÃO DE\nPROCESSOS"
+    },
+    {
+        "slide": 49,
+        "content": "VISUALIZAÇÃO DE PROCESSOS COM O PS\nO comando ps permite verificar o estado de execução de\nprocessos.\nps (sem argumentos) mostra apenas processos do usuário atual.\nps aux mostra todos os processos ativos, inclusive daemons.\nps l exibe uma lista detalhada, com várias informações por\nprocesso.\nÉ possível combinar ps com grep para filtrar processos\nespecíficos."
+    },
+    {
+        "slide": 50,
+        "content": "INFORMAÇÕES RETORNADAS PELO PS L\n\nUID: identificador do usuário dono do processo.\nPID: identificador único do processo.\nPPID: PID do processo-pai.\nPRI: prioridade do processo para o escalonador.\nSTAT: estado atual do processo (em execução, dormindo, zumbi,\netc)."
+    },
+    {
+        "slide": 51,
+        "content": "CÓDIGOS DE ESTADO DO CAMPO STAT\n\nD: dormindo, sem possibilidade de interrupção (I/O).\nR: rodando ou na fila para execução.\nS: dormindo, aguardando evento.\nT: parado ou em análise.\nZ: processo zumbi (finalizado, mas não removido da tabela de\nprocessos)."
+    },
+    {
+        "slide": 52,
+        "content": "OUTROS CAMPOS IMPORTANTES DO PS\n\nTIME: tempo total de execução do processo.\nCOMM: nome do comando executado.\nCPU: percentual de uso da CPU.\nTTY: terminal associado à execução do processo.\nWCHAN: evento que o processo está aguardando, se estiver em\nespera."
+    },
+    {
+        "slide": 53,
+        "content": "EXEMPLO PRÁTICO COM GREP\nps aux | grep mozilla mostra apenas processos relacionados ao\nMozilla.\nIsso é útil para localizar processos em background ou verificar se\nalgo está rodando.\nPode-se usar esse comando para identificar PID e encerrar\nprocessos com kill.\nTambém serve para monitorar scripts ou comandos específicos\nem execução.\nO uso de grep com ps é comum em diagnóstico e administração\nde sistema."
+    },
+    {
+        "slide": 54,
+        "content": "RESUMINDO\nQuando um processo está sendo executado, podemos usar o seu número de\nidentificação para verificar o estado da sua execução por meio do comando\nps.\n# ps\n# ps aux\n# ps l\nLista de informações: UID, PID, PPID, PRI, STAT, TIME, COMM, CPU, TTY,\nINTPRI, SZ e WCHAN.\nUsado também em canalizações para produção de filtros.\n# ps aux | grep mozilla"
+    },
+    {
+        "slide": 55,
+        "content": "VARIÁVEIS DE\nAMBIENTE"
+    },
+    {
+        "slide": 56,
+        "content": "CONCEITOS BÁSICOS DE VARIÁVEIS NO SHELL\nVariáveis são usadas para armazenar, acessar e modificar dados\nna memória.\nUma variável tem um nome e um valor, definidos com o\noperador =.\nNão pode haver espaço entre os elementos da atribuição (ex:\nX=10, não X = 10).\nO conteúdo da variável é exibido com o comando: echo\n$variavel.\nAspas duplas permitem expansão de variáveis (\"$Y\"), enquanto\naspas simples não ('$Y')."
+    },
+    {
+        "slide": 57,
+        "content": "EXEMPLOS E SINTAXE\n\nX=teste → funciona\nX=\"várias palavras\" → funciona\nX=varias palavras → erro (sem aspas)\nX=\"$Y unidades\" → $Y é substituído\nX='$Y unidades' → $Y não é substituído (aspas simples)"
+    },
+    {
+        "slide": 58,
+        "content": "VARIÁVEIS DE AMBIENTE E CONFIGURAÇÃO\nVariáveis de ambiente são usadas para definir o ambiente do\nusuário no login.\nSão carregadas por arquivos como /etc/profile ou /etc/passwd.\nDevem ser escritas em letras maiúsculas (ex: PATH, HOME,\nSHELL).\nO Shell é case-sensitive, ou seja, diferencia maiúsculas de\nminúsculas.\nO comando echo $NOME_VARIAVEL mostra o conteúdo da\nvariável."
+    },
+    {
+        "slide": 59,
+        "content": "PRINCIPAIS VARIÁVEIS DE AMBIENTE"
+    },
+    {
+        "slide": 60,
+        "content": "GERENCIAMENTO DE VARIÁVEIS NO SHELL\n\nset mostra todas as variáveis locais do Shell atual.\nenv exibe as variáveis de ambiente globais.\nunset NOME remove uma variável.\nreadonly VAR ou declare -r VAR tornam uma variável somente\nleitura.\nVariáveis read-only definidas no /etc/profile não podem ser\nalteradas sem permissão de administrador."
+    },
+    {
+        "slide": 61,
+        "content": "RESUMINDO\nSão utilizadas para manipular as posições de armazenamento na memória do\ncomputador. É possível acessar essa posição, armazenando, lendo,\nmodificando o dado lá gravado.\nUma variável tem um nome e um valor a ela associado.\nOs conteúdos das variáveis são preenchidos através do comando de\natribuição (=).\n# teste=10\nNão deve haver espaço entre os elementos de uma atribuição\nPara visualizar o conteúdo de uma variável:\n# echo $teste"
+    },
+    {
+        "slide": 62,
+        "content": "USO DE ASPAS\nSIMPLES, DUPLAS E\nBARRA INVERTIDA"
+    },
+    {
+        "slide": 63,
+        "content": "PROTEÇÃO DE CARACTERES NO SHELL\nO Shell interpreta certos caracteres especiais, como >, $, \" — e por isso, às\nvezes, precisamos protegê-los.\nA barra invertida (\\) protege apenas o caractere imediatamente após ela.\nEx: touch meuarquivo\\> cria um arquivo com nome literal\nmeuarquivo>.\nAspas simples (' ') protegem todos os caracteres internos, inclusive aspas\nduplas.\nEx: echo 'O valor é \"$X\"' → imprime literalmente, sem interpretar $X.\nAspas simples não protegem a si mesmas (não podem ser aninhadas\ndiretamente).\nEx: echo 'Teste 'outro teste'' → erro de sintaxe.\nAspas duplas (\" \") protegem caracteres, mas permitem a interpretação de\n$ e \\."
+    },
+    {
+        "slide": 64,
+        "content": "EXEMPLOS PRÁTICOS DE USO\necho “Estamos estudando o \\“uso das aspas\\”.“ → protege aspas\nduplas dentro de duplas.\necho “Conteúdo do diretório home: $HOME” → expande a\nvariável $HOME.\necho ‘Conteúdo do diretório home: $HOME’ → imprime\nliteralmente $HOME.\necho “Estamos estudando o “uso das aspas”.” → erro de sintaxe\n(aspas duplas não escapadas).\nProteções são necessárias quando o objetivo é usar um\ncaractere especial como texto, e não como comando."
+    },
+    {
+        "slide": 65,
+        "content": "EXERCÍCIOS DE\nFIXAÇÃO"
+    },
+    {
+        "slide": 66,
+        "content": "EXERCÍCIO DE FIXAÇÃO 1\n\nUtilizando a página de manual do comando ps, explique a diferença\nentre o comando ps –aux e ps –ef. Em que sintaxe cada um deles é\nvisto?"
+    },
+    {
+        "slide": 67,
+        "content": "EXERCÍCIO DE FIXAÇÃO 2\nQual comando é usado como um monitor do sistema que mostra a\natividade do processador em tempo real, exibindo as tarefas que\nestão sendo executadas na CPU e fornecendo uma interface\namigável para o gerenciamento de processos?\n(A) grep\n(B) mkdir\n(C) os\n(D) top\n(E) egrep"
+    },
+    {
+        "slide": 68,
+        "content": "EXERCÍCIO DE FIXAÇÃO 3\n\nQual comando é usado para visualizar a árvore de processos?\n(A) apple\n(B) tree\n(C) pstree\n(D) bg\n(E) fg"
+    },
+    {
+        "slide": 69,
+        "content": "SHELL SCRIPT"
+    },
+    {
+        "slide": 70,
+        "content": "CONCEITO E FINALIDADE DE SHELL SCRIPT\nShell Script é uma linguagem de programação interpretada\nexecutada pelo Shell.\nScripts automatizam tarefas repetitivas, como backups ou\ndiagnósticos.\nComandos em um script podem ser escritos um por linha ou\nseparados por ;.\nScripts são arquivos executáveis contendo sequências de\ncomandos.\nA primeira linha do script deve começar com #!/bin/bash\n(chamada de shebang)."
+    },
+    {
+        "slide": 71,
+        "content": "CRIAÇÃO E ESTRUTURA BÁSICA DE UM SCRIPT\nExemplo de script básico:\n#!/bin/bash\ncd /home/usuario/backup\ntar cvf bk.tar /var/log/*.log\nComentários são adicionados com o caractere # e não são\ninterpretados.\nPara rodar um script, use ./scriptNome, mas ele precisa estar\ncom permissão de execução.\nConceda permissão com chmod +x scriptNome.\nScripts são úteis para tarefas administrativas frequentes, como\ncópias, compressões ou alertas."
+    },
+    {
+        "slide": 72,
+        "content": "INCREMENTOS NO SCRIPT COM ECHO E DATE\nO comando echo pode exibir mensagens durante a execução.\nO date +%d%m%Y traz a data atual no formato dia/mês/ano.\nPara inserir a data no nome do arquivo, use crases:\ntar cvf bk`date +%d%m%Y`.tar /var/log/*.log\nA saída seria algo como bk08022012.tar, com base na data do\nsistema.\nIsso ajuda a organizar backups com datas, facilitando a\nrastreabilidade."
+    },
+    {
+        "slide": 73,
+        "content": "EXEMPLO DE SCRIPT COM ENTRADA DINÂMICA\nExemplo que mostra as informações do usuário atual:\n#!/bin/bash\necho \"Informações do usuário atual\"\ncat /etc/passwd | grep `whoami`\nO comando whoami retorna o usuário logado.\nO uso de crases indica que o resultado de um comando será\ninserido ali.\nA saída de cat é filtrada pelo grep, que usa como padrão o nome\ndo usuário.\nEssa estrutura permite dinamismo na execução de scripts."
+    },
+    {
+        "slide": 74,
+        "content": "FUNDAMENTOS DAS VARIÁVEIS NO SHELL SCRIPT\nVariáveis são usadas para armazenar, ler e modificar dados na\nmemória.\nAtribuições são feitas com = sem espaços entre nome e valor\n(ex: X=10).\nO conteúdo de uma variável é exibido com echo $variavel.\nAspas duplas permitem a substituição de variáveis (\"$X\"), aspas\nsimples não ('$X').\nVariáveis podem ser declaradas com declare, mas não é\nobrigatório em Shell Script."
+    },
+    {
+        "slide": 75,
+        "content": "SINTAXE E NOMENCLATURA DE VARIÁVEIS\nVariáveis devem começar com letra e podem conter letras,\nnúmeros e underscore (_).\nNão se pode usar nomes reservados ou comandos como nome\nde variável.\nExemplo válido: soma_total=100; exemplo inválido: 1var=teste.\nNomes devem ser representativos, descrevendo o que a variável\narmazena.\nComentários em scripts usam o caractere # e são ignorados pelo\ninterpretador."
+    },
+    {
+        "slide": 76,
+        "content": "EXEMPLOS PRÁTICOS DE ATRIBUIÇÃO\n\nX=1 → funciona\nX=\"várias palavras\" → funciona\nX=varias palavras → erro (sem aspas)\nX=\"$Y unidades\" → $Y é interpretado\nX='$Y unidades' → $Y não é interpretado"
+    },
+    {
+        "slide": 77,
+        "content": "ATRIBUIÇÕES COM SAÍDA DE COMANDOS\nPode-se atribuir a saída de comandos com crases (`comando``)\nou com **$()`**.\nExemplo: DATA=$(date) ou Z=\\uptime``.\nO conteúdo gerado será armazenado como string na variável.\nCuidados: o Bash pode remover quebras de linha e tabulações\ndessas saídas.\nIdeal para usar com comandos como date, whoami, uptime,\nhostname etc."
+    },
+    {
+        "slide": 78,
+        "content": "ESCOPO DE VARIÁVEIS\n\nVariável local: criada e usada somente dentro de um script.\nVariável de ambiente: visível em todo o ambiente do Shell e em\nsub-shells.\nPara transformar uma variável em global: export NOME ou\nexport NOME=\"valor\".\nVariáveis de ambiente são úteis para configurações de sistema,\ncaminhos e permissões."
+    },
+    {
+        "slide": 79,
+        "content": "COMANDOS DE LISTAGEM E GERENCIAMENTO\n\nset → lista todas as variáveis (locais e de ambiente).\nenv ou printenv → listam somente as variáveis de ambiente.\nunset VARIAVEL → remove a variável do ambiente atual.\nreadonly ou declare -r → tornam a variável imutável (read-only).\nVariáveis do tipo read-only podem ser definidas em /etc/profile\npor administradores."
+    },
+    {
+        "slide": 80,
+        "content": "RESUMINDO\nShell Script é uma linguagem de programação baseada no conceito de\ninterpretação, que pode ser utilizada na linha de comando do Shell. Os\nprogramas escritos nessa linguagem são chamados de scripts.\nCom os comandos separados por ( ; ):\n# cd /home/usuario/backup/; tar cvf bkk.tar /var/log/*.log\nOu pode ser utilizada para automatizar sequências de comandos em arquivos\nexecutáveis especiais.\nCom os comandos separados por ( ; )ou colocados um em cada linha:\n# file arquivo # utilizado para ver se um arquivo é script."
+    },
+    {
+        "slide": 81,
+        "content": "EXPRESSÕES E\nTESTES"
+    },
+    {
+        "slide": 82,
+        "content": "ARITMÉTICA COM ((EXPRESSÃO))\n\nO formato ((expressão)) é usado para operações aritméticas.\nExemplo: ((y = 5 + 6)) armazena o valor 11 na variável y.\nSuporta operadores: +, -, *, /, %, ** (exponenciação), <<, >>.\nTambém suporta incremento (++) e decremento (--).\nRespeita precedência matemática (ex: multiplicação antes da\nadição)."
+    },
+    {
+        "slide": 83,
+        "content": "COMPARAÇÕES COM (( ))\n\nComparações aritméticas retornam 1 (verdadeiro) ou 0 (falso).\nExemplos: ((5 > 2)) → 1; ((5 == 10)) → 0.\nOperadores suportados: ==, !=, >, <, >=, <=.\nExemplo: echo $(( 3 < 2 )) → imprime 0.\nPara alterar a precedência, use parênteses internos: ((r=(3-2)*4))."
+    },
+    {
+        "slide": 84,
+        "content": "OPERADORES LÓGICOS NO BASH\n\n&& → E lógico: ambos os testes precisam ser verdadeiros.\n|| → OU lógico: basta um dos testes ser verdadeiro.\n! → NOT lógico: inverte o valor lógico de uma condição.\nExemplo: ((cond1)) && ((cond2)).\nPodem ser usados dentro de [[ ]], (( )) ou com test."
+    },
+    {
+        "slide": 85,
+        "content": "TESTES COM [ EXPRESSÃO ] OU TEST (2º FORMATO)\n\nUtilizado para comparações numéricas e testes de arquivos.\nOperadores numéricos: -eq, -ne, -gt, -lt, -ge, -le.\nExemplo: [ 5 -eq 5 ] → verdadeiro (0).\nPode ser usado como: test -d \"$HOME\" para testar se é diretório.\nO status do comando pode ser verificado com echo $?."
+    },
+    {
+        "slide": 86,
+        "content": "TESTES COM [[ EXPRESSÃO ]] (3º FORMATO)\n\n[[ ... ]] é mais robusto e moderno que [ ... ].\nPermite comparação de strings, atributos de arquivos e lógicas\ncombinadas.\nExemplo: [[ (-d \"$HOME\") && (-w \"$HOME\") ]] testa se é diretório\ncom permissão de escrita.\nIdeal para comparações compostas com &&, ||, !.\necho $? após [[ ]] retorna 0 (verdadeiro) ou 1 (falso)."
+    },
+    {
+        "slide": 87,
+        "content": "TESTES EM ARQUIVOS E DIRETÓRIOS\n\n-d → testa se é diretório.\n-f → testa se é um arquivo comum.\n-r, -w, -x → verifica leitura, escrita ou execução.\n-s → testa se arquivo não está vazio.\n-N → verifica se o arquivo foi modificado desde última leitura."
+    },
+    {
+        "slide": 88,
+        "content": "COMANDO ‘READ’"
+    },
+    {
+        "slide": 89,
+        "content": "FUNDAMENTOS DO COMANDO READ\n\nO comando read lê um valor da entrada padrão (teclado) e\natribui à variável.\nÉ uma forma alternativa ao = para atribuir valores\ndinamicamente.\nExemplo simples:\necho \"Digite seu nome\"\nread nome\necho \"Bom dia $nome\"\nA leitura só acontece após o usuário digitar e pressionar Enter.\nread pode receber várias variáveis de uma vez, separando a\nentrada por espaços."
+    },
+    {
+        "slide": 90,
+        "content": "PARÂMETROS ÚTEIS DO READ\n\n-p permite exibir uma mensagem e capturar entrada na mesma\nlinha:\nread -p \"Digite seu nome: \" nome\n-s oculta a digitação do usuário (modo senha).\n-e no echo ativa interpretação de caracteres especiais, como \\n\n(nova linha).\nExemplo com senha:\nread -p \"Usuário: \" usuario\nread -s -p \"Senha: \" senha\necho -e \"\\nSeu usuário é $usuario e sua senha é $senha\"\nCombinando -p e -s melhora a interação com o usuário de forma\nsegura e fluida."
+    },
+    {
+        "slide": 91,
+        "content": "INTERATIVIDADE COM TESTES CONDICIONAIS\n\nO read pode ser usado com testes condicionais para decisões no\nscript.\nExemplo:\necho \"Deseja continuar? [s/n]\"\nread resposta\ntest \"$resposta\" = \"n\" && exit\nAlternativa com colchetes: [ \"$resposta\" = \"n\" ] && exit.\ntest ou [ permitem aplicar condições lógicas com o valor\ncapturado.\nEssa técnica permite encerrar scripts ou redirecionar fluxo com\nbase na resposta."
+    },
+    {
+        "slide": 92,
+        "content": "APLICAÇÕES PRÁTICAS COM READ\n\nCriar menus interativos com perguntas e múltiplas opções.\nCapturar e validar entradas do usuário antes de continuar.\nOcultar senhas e tokens na tela para segurança.\nAdaptar scripts para usuários finais, tornando-os mais\nacessíveis.\nAssociar read com if, case, ou test torna os scripts mais\ninteligentes e responsivos."
+    },
+    {
+        "slide": 93,
+        "content": "PARÂMETROS DE\nLINHA DE COMANDO\n(VARIÁVEIS ESPECIAIS)"
+    },
+    {
+        "slide": 94,
+        "content": "PARÂMETROS POSICIONAIS\nParâmetros de linha de comando são chamados de posicionais.\nSão utilizados para passar valores ao script durante sua\nexecução.\nExemplo: ./soma 3 9\nEsses valores são acessados com $1, $2, ..., $9, e $0 contém o\nnome do script.\nNo exemplo acima:\n$0 → soma, $1 → 3, $2 → 9\nSão úteis para scripts que processam argumentos\ndinamicamente, como calculadoras ou filtros."
+    },
+    {
+        "slide": 95,
+        "content": "CONTROLE E MANIPULAÇÃO COM SHIFT\nO comando shift desloca os parâmetros posicionais, ignorando\nos anteriores.\nshift 1 remove o primeiro argumento e move os outros uma\nposição à esquerda.\nIsso permite trabalhar com mais de 9 argumentos, apesar do\nlimite visual.\nO valor de $1 passa a ser o que era $2, e assim por diante.\nIdeal para laços que percorrem todos os parâmetros recebidos."
+    },
+    {
+        "slide": 96,
+        "content": "CONTROLE E MANIPULAÇÃO COM SHIFT\nParâmetros Especiais\n$# → indica a quantidade de parâmetros recebidos.\n$@ → lista todos os parâmetros recebidos, preservando\nespaçamentos.\n$? → mostra o status de saída do último comando (0 = sucesso,\ndiferente de 0 = erro).\n$$ → contém o PID do shell atual.\n$! → contém o PID do último processo executado em\nbackground."
+    },
+    {
+        "slide": 97,
+        "content": "EXEMPLO DE SCRIPT USANDO PARÂMETROS\n\n#!/bin/bash\necho \"O nome do programa é: $0\"\necho \"O parâmetro 1 é: $1\"\necho \"O parâmetro 2 é: $2\"\necho \"Total de parâmetros: $#\"\necho \"Lista de todos os parâmetros: $@\""
+    },
+    {
+        "slide": 98,
+        "content": "EXEMPLO DE SCRIPT USANDO PARÂMETROS\n\nMostra cada parâmetro individualmente.\nUsa echo para exibir os dados recebidos.\nÚtil para depuração e testes com argumentos.\nPode ser incrementado com operações ou validações.\nExcelente para introduzir scripts interativos via terminal."
+    },
+    {
+        "slide": 99,
+        "content": "HANDS ON"
+    },
+    {
+        "slide": 100,
+        "content": "SCRIPT DE SOMA SIMPLES (SOMA.SH)"
+    },
+    {
+        "slide": 101,
+        "content": "SCRIPT DE VALIDAÇÃO DE RESPOSTA (CONTINUAR.SH)"
+    },
+    {
+        "slide": 102,
+        "content": "SCRIPT DE BACKUP COM DATA NO NOME (BACKUP.SH)"
+    },
+    {
+        "slide": 103,
+        "content": "SCRIPT QUE EXIBE TODOS OS ARGUMENTOS\n(ARGUMENTOS.SH)"
+    },
+    {
+        "slide": 104,
+        "content": "SCRIPT COM SHIFT PARA PROCESSAR ARGUMENTOS\n(LISTAR.SH)"
+    },
+    {
+        "slide": 105,
+        "content": "SCRIPT AVALIADOR COM PARÂMETROS (AVALIADOR.SH)"
+    },
+    {
+        "slide": 106,
+        "content": "ATIVIDADE SOMATIVA"
+    }
+]
